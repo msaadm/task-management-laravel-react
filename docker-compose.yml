@@ -1,0 +1,85 @@
+services:
+  # Frontend React Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: task_frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - task_network
+    environment:
+      - VITE_API_URL=http://localhost:8000
+
+  # Backend Laravel Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: task_backend
+    volumes:
+      - ./backend:/var/www/html
+      - ./backend/storage:/var/www/html/storage
+    ports:
+      - "8000:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - APP_NAME="Task Management"
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_URL=http://localhost:8000
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=task_management
+      - DB_USERNAME=task_management_admin
+      - DB_PASSWORD=/run/secrets/db-password
+      - SANCTUM_STATEFUL_DOMAINS=localhost:3000
+      - SESSION_DOMAIN=localhost
+      - CORS_ALLOWED_ORIGINS=http://localhost:3000
+    networks:
+      - task_network
+    secrets:
+      - db-password
+
+  # PostgreSQL Service
+  db:
+    image: postgres:17-alpine
+    container_name: task_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=task_management
+      - POSTGRES_USER=task_management_admin
+      - POSTGRES_PASSWORD=/run/secrets/db-password
+    ports:
+      - "5432:5432"
+    networks:
+      - task_network
+    secrets:
+      - db-password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U task_management_admin -d task_management"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  task_network:
+    driver: bridge
+
+secrets:
+  db-password:
+    file: db/password.txt
