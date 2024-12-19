@@ -25,7 +25,7 @@ A modern task management system built with React and Laravel, featuring real-tim
 - Axios for API communication
 
 ### Backend
-- Laravel 10
+- Laravel 11
 - PostgreSQL database
 - Laravel Sanctum for authentication
 - Gate/Policy based authorization
@@ -146,4 +146,4 @@ npm run dev
 
 ## License
 
-This project is licensed under the MIT License - search MIT License for details.
+This project is licensed under the MIT License - see the [LICENSE] for details.

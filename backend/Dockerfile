@@ -23,16 +23,13 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 # Copy composer files
-COPY composer.json composer.lock ./
+COPY composer.* ./
 
 # Install composer dependencies
 RUN composer install --no-scripts --no-autoloader
 
 # Copy the rest of the application
 COPY . .
-
-# Generate autoload files
-RUN composer dump-autoload --optimize
 
 # Copy nginx configuration
 COPY ./docker/nginx/backend.conf /etc/nginx/conf.d/default.conf
