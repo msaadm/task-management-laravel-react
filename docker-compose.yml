@@ -36,6 +36,8 @@ services:
       - APP_ENV=local
       - APP_DEBUG=true
       - APP_URL=http://localhost:8000
+      - APACHE_RUN_USER=www-data
+      - APACHE_RUN_GROUP=www-data
       - DB_CONNECTION=pgsql
       - DB_HOST=db
       - DB_PORT=5432

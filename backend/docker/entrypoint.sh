@@ -31,8 +31,10 @@ wait_for_postgres() {
 # Wait for PostgreSQL to be ready
 wait_for_postgres
 
-# Start PHP-FPM
-php-fpm -D
+# Ensure Composer dependencies are installed
+if [ ! -d "vendor" ]; then
+    composer install --no-dev --optimize-autoloader
+fi
 
 # Generate Laravel key
 php artisan key:generate --force
@@ -43,5 +45,5 @@ php artisan migrate --force
 # Optimize Laravel for production
 php artisan config:cache && php artisan route:cache
 
-# Start Nginx
-nginx -g "daemon off;"
+# Start Apache server
+apache2-foreground
