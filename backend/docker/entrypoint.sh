@@ -36,7 +36,7 @@ php-fpm -D
 
 # Ensure Composer dependencies are installed
 if [ ! -d "vendor" ]; then
-    composer install --no-interaction --prefer-dist
+    php -d memory_limit=-1 /usr/bin/composer install --no-dev --optimize-autoloader --no-progress --prefer-dist
 fi
 
 # Generate Laravel key
