@@ -2,8 +2,6 @@
 
 A modern task management system built with React and Laravel, featuring real-time updates, drag-and-drop task ordering, and task list sharing capabilities.
 
-[Live Demo](https://google.com)
-
 ## Features
 
 - 📝 Create, update, and delete task lists
@@ -117,24 +115,24 @@ npm run dev
 ### Task Lists
 - `GET /api/task-lists` - Get all task lists
 - `POST /api/task-lists` - Create a new task list
-- `GET /api/task-lists/{id}` - Get a specific task list
-- `PUT /api/task-lists/{id}` - Update a task list
-- `DELETE /api/task-lists/{id}` - Delete a task list
-- `GET /api/task-lists/shared` - Get lists shared with user
-- `GET /api/task-lists/stats` - Get task list statistics
+- `GET /api/task-lists/{taskList}` - Get a specific task list
+- `PUT /api/task-lists/{taskList}` - Update a task list
+- `DELETE /api/task-lists/{taskList}` - Delete a task list
+- `GET /api/task-lists/shared/with-me` - Get lists shared with user
+- `GET /api/task-lists/stats/all` - Get task list statistics
 
 ### Tasks
-- `GET /api/task-lists/{listId}/tasks` - Get all tasks in a list
-- `POST /api/task-lists/{listId}/tasks` - Create a new task
-- `PUT /api/tasks/{id}` - Update a task
-- `DELETE /api/tasks/{id}` - Delete a task
-- `PUT /api/tasks/{id}/toggle-complete` - Toggle task completion
-- `POST /api/task-lists/{listId}/tasks/reorder` - Reorder tasks
+- `GET /api/task-lists/{taskList}/tasks` - Get all tasks in a list
+- `POST /api/task-lists/{taskList}/tasks` - Create a new task
+- `PUT /api/tasks/{task}` - Update a task
+- `DELETE /api/tasks/{task}` - Delete a task
+- `PUT /api/tasks/{task}/toggle-complete` - Toggle task completion
+- `POST /api/task-lists/{taskList}/reorder` - Reorder tasks
 
 ### Sharing
-- `POST /api/task-lists/{listId}/share` - Share a task list
-- `PUT /api/task-lists/{listId}/share/{userId}` - Update share permissions
-- `DELETE /api/task-lists/{listId}/share/{userId}` - Remove share
+- `POST /api/task-lists/{taskList}/share` - Share a task list
+- `PUT /api/task-lists/{taskList}/share/{userId}` - Update share permissions
+- `DELETE /api/task-lists/{taskList}/share/{userId}` - Remove share
 
 ## Contributing
 
