@@ -1,20 +1,21 @@
 # Base image with PHP and Apache
-FROM php:8.2-apache
+FROM php:8.2-fpm
 
 # Install required system dependencies
 RUN apt-get update && apt-get install -y \
     git \
-    unzip \
+    curl \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
-    libzip-dev \
+    zip \
+    unzip \
+    nginx \
     libpq-dev \
-    && docker-php-ext-install pdo_pgsql mbstring exif pcntl bcmath gd zip \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
-# Enable Apache mod_rewrite for Laravel
-RUN a2enmod rewrite
+# Install PHP extensions
+RUN docker-php-ext-install pdo_pgsql mbstring exif pcntl bcmath gd
 
 # Set working directory
 WORKDIR /var/www/html
@@ -32,13 +33,12 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
+# Copy nginx configuration
+COPY ./docker/nginx/backend.conf /etc/nginx/conf.d/default.conf
+
 # Set permissions for Laravel storage and cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Set Apache DocumentRoot to Laravel's public directory
-RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
-RUN sed -i 's|/var/www/|/var/www/html/public|g' /etc/apache2/apache2.conf
 
 # Expose port 80
 EXPOSE 80
