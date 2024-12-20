@@ -33,7 +33,7 @@ const registerSchema = z
 export type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function Register() {
-  const { register: registerUser } = useAuth();
+  const { register: registerUser,getCSRFToken } = useAuth();
   const [error, setError] = useState('');
 
   const {
@@ -48,6 +48,7 @@ export default function Register() {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       setError('');
+      await getCSRFToken();
       await registerUser(data);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {

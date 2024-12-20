@@ -17,7 +17,7 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, getCSRFToken } = useAuth();
   const [error, setError] = useState('');
 
   const {
@@ -32,6 +32,7 @@ export default function Login() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       setError('');
+      await getCSRFToken();
       await login(data.email, data.password);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
