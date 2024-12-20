@@ -36,7 +36,7 @@ php-fpm -D
 
 # Ensure Composer dependencies are installed
 if [ ! -d "vendor" ]; then
-    composer install --no-dev --optimize-autoloader
+    composer install --no-interaction --prefer-dist
 fi
 
 # Generate Laravel key
